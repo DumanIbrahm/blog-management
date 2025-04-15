@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using BlogManagementProject.Models.ViewModels;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
 
 
 
@@ -45,19 +47,23 @@ namespace BlogManagementProject.Controllers
         public IActionResult Login() => View();
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (result.Succeeded)
-                return RedirectToAction("Index", "Blog");
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            ModelState.AddModelError("", "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, "Invalid email or password");
             return View(model);
         }
+
 
         public async Task<IActionResult> Logout()
         {

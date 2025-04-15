@@ -7,6 +7,15 @@
 <h2>Login</h2>
 
 <form asp-action="Login" method="post">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <strong>Email or Password incorrect!</strong>
+
+            @Html.ValidationSummary(excludePropertyErrors: true)
+        </div>
+    }
+
     <div class="form-group mb-2">
         <label asp-for="UserName"></label>
         <input asp-for="UserName" class="form-control" />
