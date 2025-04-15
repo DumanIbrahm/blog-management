@@ -22,11 +22,29 @@ namespace BlogManagementProject.Controllers
             _userRepository = userRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search, int? categoryId)
         {
             var blogs = await _blogRepository.GetAllWithCategoryAsync();
+            var categories = await _categoryRepository.GetAllAsync();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                blogs = blogs.Where(b => b.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                                         b.Content.Contains(search, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                blogs = blogs.Where(b => b.CategoryId == categoryId.Value);
+            }
+
+            ViewBag.Categories = categories;
+            ViewBag.SelectedCategory = categoryId;
+            ViewBag.Search = search;
+
             return View(blogs);
         }
+
 
         public async Task<IActionResult> Details(int id)
         {
@@ -136,6 +154,29 @@ namespace BlogManagementProject.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> SearchBlogs(string query)
+        {
+            var blogs = await _blogRepository.GetAllWithCategoryAsync();
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                blogs = blogs.Where(b =>
+                    b.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                    b.Content.Contains(query, StringComparison.OrdinalIgnoreCase));
+            }
+
+            var result = blogs.Select(b => new
+            {
+                b.Id,
+                b.Title,
+                Content = b.Content.Length > 100 ? b.Content.Substring(0, 100) + "..." : b.Content,
+                User = b.User?.UserName,
+                Date = b.PublishedDate.ToShortDateString()
+            });
+
+            return Json(result);
+        }
 
     }
 }

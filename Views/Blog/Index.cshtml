@@ -13,19 +13,41 @@
     }
 </div>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+<form asp-action="Index" method="get" class="row g-3 mb-4">
+    <div class="col-md-6">
+        <input type="text" id="searchInput" name="search" value="@ViewBag.Search" class="form-control"
+            placeholder="Search blog title or content..." />
+    </div>
+    <div class="col-md-4">
+        <select name="categoryId" class="form-select">
+            <option value="">-- All Categories --</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                var selected = ViewBag.SelectedCategory == category.Id ? "selected" : "";
+                <option value="@category.Id" selected="@selected">@category.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-primary w-100">
+            <i class="bi bi-search"></i> Search
+        </button>
+    </div>
+</form>
+
+<div id="blogList" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     @foreach (var blog in Model)
     {
         <div class="col">
             <div class="card h-100 shadow-sm border-0 transition hover-shadow">
-
                 @if (!string.IsNullOrEmpty(blog.ImagePath))
                 {
                     <img src="@blog.ImagePath" class="card-img-top" alt="Blog image" style="object-fit: cover; height: 200px;">
                 }
                 <div class="card-body">
                     <h5 class="card-title fw-semibold">@blog.Title</h5>
-                    <p class="card-text text-muted small">@blog.Content.Substring(0, Math.Min(100, blog.Content.Length))...
+                    <p class="card-text text-muted small">
+                        @blog.Content.Substring(0, Math.Min(100, blog.Content.Length))...
                     </p>
                 </div>
                 <div class="card-footer bg-white d-flex justify-content-between align-items-center border-top-0">
@@ -35,9 +57,45 @@
                     <a class="btn btn-outline-primary btn-sm" asp-action="Details" asp-route-id="@blog.Id">
                         <i class="bi bi-eye"></i> Read More
                     </a>
-
                 </div>
             </div>
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        const input = document.getElementById("searchInput");
+        const blogList = document.getElementById("blogList");
+
+        input.addEventListener("input", async () => {
+            const query = input.value;
+
+            const response = await fetch(`/Blog/SearchBlogs?query=${encodeURIComponent(query)}`);
+            const blogs = await response.json();
+
+            blogList.innerHTML = "";
+
+            blogs.forEach(blog => {
+                blogList.innerHTML += `
+                    <div class="col">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title fw-semibold">${blog.title}</h5>
+                                <p class="card-text text-muted small">${blog.content}</p>
+                            </div>
+                            <div class="card-footer bg-white d-flex justify-content-between align-items-center border-top-0">
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar"></i> ${blog.date} • ${blog.user}
+                                </small>
+                                <a class="btn btn-outline-primary btn-sm" href="/Blog/Details/${blog.id}">
+                                    <i class="bi bi-eye"></i> Read More
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+            });
+        });
+    </script>
+}
