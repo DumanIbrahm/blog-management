@@ -55,7 +55,7 @@ namespace BlogManagementProject.Controllers
             return View(blog);
         }
 
-
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Create()
         {
@@ -71,8 +71,13 @@ namespace BlogManagementProject.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Categories = await _categoryRepository.GetAllAsync();
-                return View(new Blog());
+                return View(blog);
             }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            blog.UserId = userId!;
+            blog.PublishedDate = DateTime.Now;
+
 
             if (imageFile != null && imageFile.Length > 0)
             {
@@ -90,11 +95,7 @@ namespace BlogManagementProject.Controllers
                 blog.ImagePath = "/images/" + fileName;
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            blog.UserId = userId!;
-            blog.PublishedDate = DateTime.Now;
-
-            await _blogRepository.AddAsync(blog);
+            _blogRepository.Update(blog);
             await _blogRepository.SaveAsync();
 
             return RedirectToAction(nameof(Index));
@@ -102,6 +103,7 @@ namespace BlogManagementProject.Controllers
 
 
 
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
@@ -117,12 +119,29 @@ namespace BlogManagementProject.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(Blog blog)
+        public async Task<IActionResult> Edit(Blog blog, IFormFile? imageFile)
         {
             if (!ModelState.IsValid)
             {
                 ViewBag.Categories = await _categoryRepository.GetAllAsync();
                 return View(blog);
+            }
+
+            // Fotoğrafın değiştirilip değiştirilmediğini kontrol et
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                blog.ImagePath = "/images/" + fileName; // Yeni fotoğraf yolunu güncelle
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

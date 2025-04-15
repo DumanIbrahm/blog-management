@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "z7Px6SngYD7eFZYVcPTXmdUYANMGunYMLIMQgiEVGWs=",
+  "Hash": "p4J/oFZH5CS1FdgUglDCr2THE4G1wafl53siKBcbpFU=",
   "Source": "BlogManagementProject",
   "BasePath": "_content/BlogManagementProject",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/bd731aeb-1e9f-4297-a698-f5e3fc41a30d.png",
+      "SourceId": "BlogManagementProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/",
+      "BasePath": "_content/BlogManagementProject",
+      "RelativePath": "images/bd731aeb-1e9f-4297-a698-f5e3fc41a30d.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/bd731aeb-1e9f-4297-a698-f5e3fc41a30d.png"
     },
     {
       "Identity": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/js/site.js",

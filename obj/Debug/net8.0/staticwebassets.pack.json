@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/bd731aeb-1e9f-4297-a698-f5e3fc41a30d.png",
+      "PackagePath": "staticwebassets/images/bd731aeb-1e9f-4297-a698-f5e3fc41a30d.png"
+    },
+    {
       "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },
