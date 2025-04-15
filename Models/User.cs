@@ -1,3 +1,4 @@
+using BlogManagementProject.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace BlogManagementProject
