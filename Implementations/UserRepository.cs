@@ -16,5 +16,10 @@ namespace BlogManagementProject.Repositories.Implementations
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
         }
+        public async Task<User?> GetByIdAsync(string id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
     }
 }

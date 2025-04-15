@@ -38,6 +38,15 @@ namespace BlogManagementProject.Repositories.Implementations
                     .ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
+        public async Task<IEnumerable<Blog>> GetAllByUserIdAsync(string userId)
+        {
+            return await _context.Blogs
+                .Where(b => b.UserId == userId)
+                .Include(b => b.Category)
+                .OrderByDescending(b => b.PublishedDate)
+                .ToListAsync();
+        }
+
 
     }
 }
