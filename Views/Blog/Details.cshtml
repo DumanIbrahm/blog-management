@@ -30,7 +30,7 @@
                 User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == Model.UserId)
         {
             <div class="d-flex gap-2">
-                <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@Model.Id">
+                <a class="btn btn-outline-warning" title="Edit this blog post" asp-action="Edit" asp-route-id="@Model.Id">
                     <i class="bi bi-pencil-square"></i> Edit
                 </a>
                 <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@Model.Id">

@@ -60,31 +60,35 @@ namespace BlogManagementProject.Controllers
         public async Task<IActionResult> Create()
         {
             ViewBag.Categories = await _categoryRepository.GetAllAsync();
-            return View();
+            return View(new Blog());
         }
+
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(Blog blog)
+        public async Task<IActionResult> Create(Blog blog, IFormFile? imageFile)
         {
-            Console.WriteLine("FORM SUBMITTED");
-
             if (!ModelState.IsValid)
             {
-                foreach (var key in ModelState.Keys)
-                {
-                    var errors = ModelState[key].Errors;
-                    foreach (var error in errors)
-                    {
-                        Console.WriteLine($"Model error on {key}: {error.ErrorMessage}");
-                    }
-                }
-
                 ViewBag.Categories = await _categoryRepository.GetAllAsync();
-                return View(blog);
+                return View(new Blog());
             }
 
-            Console.WriteLine($"ADDING BLOG: {blog.Title}, CategoryId: {blog.CategoryId}, UserId: {User.FindFirstValue(ClaimTypes.NameIdentifier)}");
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                blog.ImagePath = "/images/" + fileName;
+            }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             blog.UserId = userId!;
@@ -95,6 +99,7 @@ namespace BlogManagementProject.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
 
 
         [Authorize]
