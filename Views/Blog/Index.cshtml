@@ -1,0 +1,24 @@
+@model IEnumerable<BlogManagementProject.Models.Blog>
+
+
+
+@{
+    ViewData["Title"] = "Blog List";
+}
+
+<h2>Blog Posts</h2>
+
+@foreach (var blog in Model)
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4 class="card-title">@blog.Title</h4>
+            <p class="card-text">@blog.Content.Substring(0, Math.Min(150, blog.Content.Length))...</p>
+            <p class="card-text">
+                <small class="text-muted">Author: @blog.User?.UserName | Category: @blog.Category?.Name | Date:
+                    @blog.PublishedDate.ToShortDateString()</small>
+            </p>
+            <a class="btn btn-primary" asp-action="Details" asp-route-id="@blog.Id">Read More</a>
+        </div>
+    </div>
+}

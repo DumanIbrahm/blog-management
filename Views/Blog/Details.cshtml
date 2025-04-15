@@ -1,0 +1,22 @@
+@model BlogManagementProject.Models.Blog
+
+@{
+    ViewData["Title"] = "Blog Details";
+}
+
+<h2>@Model.Title</h2>
+
+<p>
+    <strong>Author:</strong> @Model.User?.UserName<br />
+    <strong>Category:</strong> @Model.Category?.Name<br />
+    <strong>Date:</strong> @Model.PublishedDate.ToShortDateString()
+</p>
+
+@if (!string.IsNullOrEmpty(Model.ImagePath))
+{
+    <img src="@Model.ImagePath" alt="Blog Image" class="img-fluid mb-3" />
+}
+
+<p>@Model.Content</p>
+
+<a class="btn btn-secondary" asp-action="Index">Back to List</a>
