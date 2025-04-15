@@ -1,3 +1,4 @@
+using BlogManagementProject.Models;
 using BlogManagementProject.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
