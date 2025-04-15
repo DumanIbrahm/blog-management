@@ -28,5 +28,16 @@ namespace BlogManagementProject.Repositories.Implementations
                                  .Include(b => b.User)
                                  .FirstOrDefaultAsync(b => b.Id == id);
         }
+
+        public async Task<Blog?> GetByIdWithCommentsAsync(int id)
+        {
+            return await _context.Blogs
+                .Include(b => b.User)
+                .Include(b => b.Category)
+                .Include(b => b.Comments!)
+                    .ThenInclude(c => c.User)
+                .FirstOrDefaultAsync(b => b.Id == id);
+        }
+
     }
 }

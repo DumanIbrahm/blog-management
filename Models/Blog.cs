@@ -24,5 +24,7 @@ namespace BlogManagementProject.Models
         [Required]
         public int CategoryId { get; set; } // Foreign key
         public Category? Category { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
+
     }
 }

@@ -48,12 +48,13 @@ namespace BlogManagementProject.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var blog = await _blogRepository.GetByIdWithDetailsAsync(id);
+            var blog = await _blogRepository.GetByIdWithCommentsAsync(id);
             if (blog == null)
                 return NotFound();
 
             return View(blog);
         }
+
 
         [Authorize]
         public async Task<IActionResult> Create()

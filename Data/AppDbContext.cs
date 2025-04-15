@@ -12,6 +12,8 @@ namespace BlogManagementProject
 
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -34,6 +36,18 @@ namespace BlogManagementProject
                    .WithMany(c => c.Blogs)
                    .HasForeignKey(b => b.CategoryId)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Comment>()
+                    .HasOne(c => c.Blog)
+                    .WithMany(b => b.Comments)
+                    .HasForeignKey(c => c.BlogId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Comment>()
+                    .HasOne(c => c.User)
+                    .WithMany()
+                    .HasForeignKey(c => c.UserId)
+                    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
