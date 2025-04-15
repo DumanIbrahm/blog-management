@@ -18,8 +18,7 @@ namespace BlogManagementProject.Models
 
         public string? ImagePath { get; set; }
 
-        [Required]
-        public string UserId { get; set; } // Foreign key 
+        public string? UserId { get; set; } // Foreign key 
         public User? User { get; set; }
 
         [Required]

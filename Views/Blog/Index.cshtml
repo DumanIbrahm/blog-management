@@ -1,24 +1,43 @@
 @model IEnumerable<BlogManagementProject.Models.Blog>
-
-
-
 @{
-    ViewData["Title"] = "Blog List";
+    ViewData["Title"] = "Blog Posts";
 }
 
-<h2>Blog Posts</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Blog Posts</h2>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <a class="btn btn-success shadow-sm" asp-action="Create">
+            <i class="bi bi-plus-circle me-1"></i> Create Blog
+        </a>
+    }
+</div>
 
-@foreach (var blog in Model)
-{
-    <div class="card mb-3">
-        <div class="card-body">
-            <h4 class="card-title">@blog.Title</h4>
-            <p class="card-text">@blog.Content.Substring(0, Math.Min(150, blog.Content.Length))...</p>
-            <p class="card-text">
-                <small class="text-muted">Author: @blog.User?.UserName | Category: @blog.Category?.Name | Date:
-                    @blog.PublishedDate.ToShortDateString()</small>
-            </p>
-            <a class="btn btn-primary" asp-action="Details" asp-route-id="@blog.Id">Read More</a>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var blog in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 transition hover-shadow">
+
+                @if (!string.IsNullOrEmpty(blog.ImagePath))
+                {
+                    <img src="@blog.ImagePath" class="card-img-top" alt="Blog image" style="object-fit: cover; height: 200px;">
+                }
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold">@blog.Title</h5>
+                    <p class="card-text text-muted small">@blog.Content.Substring(0, Math.Min(100, blog.Content.Length))...
+                    </p>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-between align-items-center border-top-0">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar"></i> @blog.PublishedDate.ToShortDateString() • @blog.User?.UserName
+                    </small>
+                    <a class="btn btn-outline-primary btn-sm" asp-action="Details" asp-route-id="@blog.Id">
+                        <i class="bi bi-eye"></i> Read More
+                    </a>
+
+                </div>
+            </div>
         </div>
-    </div>
-}
+    }
+</div>

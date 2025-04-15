@@ -48,11 +48,24 @@ namespace BlogManagementProject.Controllers
         [Authorize]
         public async Task<IActionResult> Create(Blog blog)
         {
+            Console.WriteLine("FORM SUBMITTED");
+
             if (!ModelState.IsValid)
             {
+                foreach (var key in ModelState.Keys)
+                {
+                    var errors = ModelState[key].Errors;
+                    foreach (var error in errors)
+                    {
+                        Console.WriteLine($"Model error on {key}: {error.ErrorMessage}");
+                    }
+                }
+
                 ViewBag.Categories = await _categoryRepository.GetAllAsync();
                 return View(blog);
             }
+
+            Console.WriteLine($"ADDING BLOG: {blog.Title}, CategoryId: {blog.CategoryId}, UserId: {User.FindFirstValue(ClaimTypes.NameIdentifier)}");
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             blog.UserId = userId!;
@@ -63,6 +76,7 @@ namespace BlogManagementProject.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
 
         [Authorize]
         public async Task<IActionResult> Edit(int id)

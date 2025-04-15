@@ -1,3 +1,4 @@
+using BlogManagementProject.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,12 @@ namespace BlogManagementProject
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Category>().HasData(
+            new Category { Id = 1, Name = "Technology", Description = "All about tech" },
+            new Category { Id = 2, Name = "Lifestyle", Description = "Health & daily life" },
+            new Category { Id = 3, Name = "Education", Description = "Learning and knowledge" }
+            );
 
             builder.Entity<Blog>()
                    .HasOne(b => b.User)
