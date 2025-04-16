@@ -69,8 +69,9 @@ namespace BlogManagementProject.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            ViewBag.Categories = await _categoryRepository.GetAllAsync();
-            return View(new Blog());
+            var categories = await _categoryRepository.GetAllAsync();
+            ViewBag.Categories = categories;
+            return View();
         }
 
 

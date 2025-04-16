@@ -43,7 +43,7 @@
             <div class="form-group mb-4">
                 <label asp-for="CategoryId" class="form-label">Category</label>
                 <select asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))"
-                    class="form-select">
+                    class="form-control">
                     <option value="">-- Select Category --</option>
                 </select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>

@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-4">
                 <select name="categoryId" class="form-select">
-                    <option value="">-- All Categories --</option>
+                    <option value="">Select Categories</option>
                     @foreach (var category in ViewBag.Categories)
                     {
                         <option value="@category.Id"
@@ -152,23 +152,23 @@
 
             blogs.forEach(blog => {
                 blogList.innerHTML += `
-                                            <div class="col">
-                                                <div class="card h-100 shadow-sm border-0 transition hover-shadow">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title fw-semibold">${blog.title}</h5>
-                                                        <p class="card-text text-muted small">${blog.content}</p>
-                                                    </div>
-                                                    <div class="card-footer bg-white d-flex justify-content-between align-items-center border-top-0">
-                                                        <small class="text-muted">
-                                                            <i class="bi bi-calendar"></i> ${blog.date} • ${blog.user}
-                                                        </small>
-                                                        <a class="btn btn-outline-primary btn-sm" href="/Blog/Details/${blog.id}">
-                                                            <i class="bi bi-eye"></i> Read More
-                                                        </a>
+                                                <div class="col">
+                                                    <div class="card h-100 shadow-sm border-0 transition hover-shadow">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title fw-semibold">${blog.title}</h5>
+                                                            <p class="card-text text-muted small">${blog.content}</p>
+                                                        </div>
+                                                        <div class="card-footer bg-white d-flex justify-content-between align-items-center border-top-0">
+                                                            <small class="text-muted">
+                                                                <i class="bi bi-calendar"></i> ${blog.date} • ${blog.user}
+                                                            </small>
+                                                            <a class="btn btn-outline-primary btn-sm" href="/Blog/Details/${blog.id}">
+                                                                <i class="bi bi-eye"></i> Read More
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        `;
+                                            `;
             });
         });
     </script>
