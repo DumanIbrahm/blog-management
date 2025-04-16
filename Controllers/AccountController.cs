@@ -48,19 +48,25 @@ namespace BlogManagementProject.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-
-            if (result.Succeeded)
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user == null)
             {
-                return RedirectToAction("Index", "Home");
+                ModelState.AddModelError(string.Empty, "Email or Password incorrect!");
+                return View(model);
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid email or password");
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+
+            ModelState.AddModelError(string.Empty, "Email or Password incorrect!");
             return View(model);
         }
 
