@@ -41,6 +41,14 @@
       "PackagePath": "staticwebassets/images/d5a3ffa7-4457-4f1f-9224-661491482229.png"
     },
     {
+      "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/ed9bcc8b-373e-46a5-abe0-9797d605185a.png",
+      "PackagePath": "staticwebassets/images/ed9bcc8b-373e-46a5-abe0-9797d605185a.png"
+    },
+    {
+      "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/profiles/2417367c-e315-4b7b-acd3-d32b8a69863d.png",
+      "PackagePath": "staticwebassets/images/profiles/2417367c-e315-4b7b-acd3-d32b8a69863d.png"
+    },
+    {
       "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },
