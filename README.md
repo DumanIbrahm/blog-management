@@ -43,27 +43,27 @@ In this blog web application, users can perform the following actions:
 Postly includes a fully-featured Admin Panel to help administrators manage the application efficiently.
 
 🔑 Admin Access
-To access the admin panel:
-Register as a user.
-Manually assign the Admin role to your account in the database (or via code/seed).
-Log in and navigate to:
-👉 /Admin/Index
+- To access the admin panel:
+- Register as a user.
+- Manually assign the Admin role to your account in the database (or via code/seed).
+- Log in and navigate to:
+- 👉 /Admin/Index
 
 🧭 Admin Dashboard Includes:
-📊 Statistics Cards for:
-Total Blogs
-Total Users
-Total Categories
-Total Comments
-📈 Weekly Blog Posts Chart: Displays the number of blog posts published in the last 7 days.
-📊 Blog Distribution by Category: Bar chart of blogs grouped by category.
+- 📊 Statistics Cards for:
+- Total Blogs
+- Total Users
+- Total Categories
+- Total Comments
+- 📈 Weekly Blog Posts Chart: Displays the number of blog posts published in the last 7 days.
+- 📊 Blog Distribution by Category: Bar chart of blogs grouped by category.
 
 🔧 Admin Management Actions:
-📝 View and delete all blog posts.
-💬 View and delete all comments (including replies).
-📁 View and delete categories (only if no blogs are linked).
-👤 View and delete registered users.
-⚠️ Admins can moderate content, manage user-generated data, and maintain the integrity of the platform.
+- 📝 View and delete all blog posts.
+- 💬 View and delete all comments (including replies).
+- 📁 View and delete categories (only if no blogs are linked).
+- 👤 View and delete registered users.
+- ⚠️ Admins can moderate content, manage user-generated data, and maintain the integrity of the platform.
 
 ## 🖼️ Example Screenshots
 <img width="1470" alt="Ekran Resmi 2025-04-16 18 37 12" src="https://github.com/user-attachments/assets/c057565d-0ffa-4cd7-aa74-8cfdb38e472c" />
