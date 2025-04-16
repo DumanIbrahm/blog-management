@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "k59n/TqRCkqJKom4e31t9RJYj0au5cBknC0jnQZGXZg=",
+  "Hash": "Z9ANq58MkNz1WTPzO2nHDx5E2dLg4pXKNTOxsdo2k8Q=",
   "Source": "BlogManagementProject",
   "BasePath": "_content/BlogManagementProject",
   "Mode": "Default",
@@ -150,6 +150,25 @@
       "OriginalItemSpec": "wwwroot/images/4b01f4f3-755f-4684-9e54-1233ac30f003.webp"
     },
     {
+      "Identity": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/4d8d6375-df51-4a38-9bb3-a5e991ee5564.png",
+      "SourceId": "BlogManagementProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/",
+      "BasePath": "_content/BlogManagementProject",
+      "RelativePath": "images/4d8d6375-df51-4a38-9bb3-a5e991ee5564.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/4d8d6375-df51-4a38-9bb3-a5e991ee5564.png"
+    },
+    {
       "Identity": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/5b333be6-9ff4-484b-9981-ac30d275905c.jpeg",
       "SourceId": "BlogManagementProject",
       "SourceType": "Discovered",
@@ -262,6 +281,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/8de0f68a-dd35-4949-aede-2d8fa42641c7.jpg"
+    },
+    {
+      "Identity": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/971830bf-b890-4fc2-8043-997f1f3a6d89.png",
+      "SourceId": "BlogManagementProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/",
+      "BasePath": "_content/BlogManagementProject",
+      "RelativePath": "images/971830bf-b890-4fc2-8043-997f1f3a6d89.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/971830bf-b890-4fc2-8043-997f1f3a6d89.png"
     },
     {
       "Identity": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/99dd3bb5-fc21-497b-b70b-58af00330ee3.jpeg",

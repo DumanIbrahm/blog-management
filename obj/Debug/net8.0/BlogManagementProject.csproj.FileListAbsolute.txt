@@ -279,3 +279,4 @@
 /Users/ibrahimduman/Desktop/BlogManagementProject/obj/Debug/net8.0/BlogManagementProject.pdb
 /Users/ibrahimduman/Desktop/BlogManagementProject/obj/Debug/net8.0/BlogManagementProject.genruntimeconfig.cache
 /Users/ibrahimduman/Desktop/BlogManagementProject/obj/Debug/net8.0/ref/BlogManagementProject.dll
+/Users/ibrahimduman/Desktop/BlogManagementProject/obj/Debug/net8.0/BlogManagementProject.sourcelink.json

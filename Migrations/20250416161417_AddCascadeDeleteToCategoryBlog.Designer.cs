@@ -4,6 +4,7 @@ using BlogManagementProject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogManagementProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250416161417_AddCascadeDeleteToCategoryBlog")]
+    partial class AddCascadeDeleteToCategoryBlog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,7 +97,31 @@ namespace BlogManagementProject.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 4,
+                            Description = "Learning and knowledge",
+                            Name = "Education"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Learning and knowledge",
+                            Name = "Education"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Learning and knowledge",
+                            Name = "Education"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Learning and knowledge",
+                            Name = "Education"
+                        },
+                        new
+                        {
+                            Id = 8,
                             Description = "Learning and knowledge",
                             Name = "Education"
                         });
@@ -118,9 +145,6 @@ namespace BlogManagementProject.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ParentCommentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -128,8 +152,6 @@ namespace BlogManagementProject.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BlogId");
-
-                    b.HasIndex("ParentCommentId");
 
                     b.HasIndex("UserId");
 
@@ -366,10 +388,6 @@ namespace BlogManagementProject.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("BlogManagementProject.Models.Comment", "ParentComment")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentCommentId");
-
                     b.HasOne("BlogManagementProject.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -377,8 +395,6 @@ namespace BlogManagementProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Blog");
-
-                    b.Navigation("ParentComment");
 
                     b.Navigation("User");
                 });
@@ -442,11 +458,6 @@ namespace BlogManagementProject.Migrations
             modelBuilder.Entity("BlogManagementProject.Models.Category", b =>
                 {
                     b.Navigation("Blogs");
-                });
-
-            modelBuilder.Entity("BlogManagementProject.Models.Comment", b =>
-                {
-                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("BlogManagementProject.User", b =>

@@ -2,6 +2,8 @@ using BlogManagementProject.Models;
 using BlogManagementProject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+
 using System.Security.Claims;
 
 namespace BlogManagementProject.Controllers
@@ -10,27 +12,27 @@ namespace BlogManagementProject.Controllers
     public class CommentController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public CommentController(AppDbContext context)
+        public CommentController(AppDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Comment comment)
+        public async Task<IActionResult> Add(Comment model)
         {
-            if (string.IsNullOrWhiteSpace(comment.Content))
-            {
-                return RedirectToAction("Details", "Blog", new { id = comment.BlogId });
-            }
+            if (string.IsNullOrWhiteSpace(model.Content))
+                return RedirectToAction("Details", "Blog", new { id = model.BlogId });
 
-            comment.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            comment.CreatedAt = DateTime.Now;
+            model.CreatedAt = DateTime.Now;
+            model.UserId = _userManager.GetUserId(User);
 
-            _context.Comments.Add(comment);
+            _context.Comments.Add(model);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details", "Blog", new { id = comment.BlogId });
+            return RedirectToAction("Details", "Blog", new { id = model.BlogId });
         }
     }
 }

@@ -1,0 +1,76 @@
+@model IEnumerable<BlogManagementProject.Models.Comment>
+
+@{
+    ViewData["Title"] = "All Comments";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold">💬 All Comments</h3>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No comments found.</div>
+    }
+    else
+    {
+        <div class="table-responsive shadow-sm rounded border">
+            <table class="table table-hover table-bordered mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Blog</th>
+                        <th>User</th>
+                        <th>Comment</th>
+                        <th>Date</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var comment in Model)
+                    {
+                        <tr>
+                            <td>@comment.Blog?.Title</td>
+                            <td>@comment.User?.UserName</td>
+                            <td>@comment.Content</td>
+                            <td>@comment.CreatedAt.ToShortDateString()</td>
+                            <td>
+                                <form id="deleteCommentForm-@comment.Id" asp-action="DeleteComment" asp-route-id="@comment.Id"
+                                    method="post" onsubmit="return false;">
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                        onclick="confirmCommentDelete(@comment.Id)">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmCommentDelete(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`deleteCommentForm-${id}`).submit();
+                }
+            });
+        }
+    </script>
+}

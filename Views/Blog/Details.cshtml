@@ -53,17 +53,22 @@
         background-color: #fdfdfd;
     }
 
+    .comment-card.reply {
+        background-color: #f8f9fa;
+        border-left: 3px solid #0d6efd;
+    }
+
     .comment-form {
         margin-top: 2rem;
     }
 </style>
 
 <div class="details-wrapper">
-    <a class="btn btn-outline-secondary" asp-action="Index">
+    <a class="btn btn-outline-secondary mb-3" asp-action="Index">
         <i class="bi bi-arrow-left"></i> Back to blogs
     </a>
-    <div class="blog-details-card">
 
+    <div class="blog-details-card">
         @if (!string.IsNullOrEmpty(Model.ImagePath))
         {
             <img src="@Model.ImagePath" alt="Blog image" class="blog-details-image" />
@@ -81,8 +86,6 @@
         </div>
 
         <div class="blog-actions">
-
-
             @if (User.Identity?.IsAuthenticated == true &&
                         User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == Model.UserId)
             {
@@ -102,7 +105,8 @@
 
             @if (Model.Comments != null && Model.Comments.Any())
             {
-                foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+                foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null).OrderByDescending(c =>
+                c.CreatedAt))
                 {
                     <div class="comment-card">
                         <p class="mb-1">@comment.Content</p>
@@ -110,6 +114,38 @@
                             <i class="bi bi-person-circle"></i> @comment.User?.UserName •
                             <i class="bi bi-clock"></i> @comment.CreatedAt.ToString("g")
                         </small>
+
+                        <a href="javascript:void(0);"
+                            class="d-block mt-2 text-decoration-underline text-primary small reply-toggle"
+                            data-id="@comment.Id">
+                            Reply
+                        </a>
+
+                        <div id="replyForm-@comment.Id" class="reply-form d-none mt-2">
+                            <form asp-controller="Comment" asp-action="Add" method="post">
+                                <input type="hidden" name="BlogId" value="@Model.Id" />
+                                <input type="hidden" name="ParentCommentId" value="@comment.Id" />
+                                <textarea name="Content" class="form-control mb-2" rows="2" placeholder="Write your reply..."
+                            required></textarea>
+                                <button type="submit" class="btn btn-sm btn-success">
+                                    <i class="bi bi-reply"></i> Post Reply
+                                </button>
+                            </form>
+                        </div>
+
+                        @foreach (var reply in Model.Comments.Where(r => r.ParentCommentId == comment.Id).OrderBy(r =>
+                                        r.CreatedAt))
+                        {
+                            <div class="ms-4 mt-3">
+                                <div class="comment-card reply">
+                                    <p class="mb-1">@reply.Content</p>
+                                    <small class="text-muted">
+                                        <i class="bi bi-person-circle"></i> @reply.User?.UserName •
+                                        <i class="bi bi-clock"></i> @reply.CreatedAt.ToString("g")
+                                    </small>
+                                </div>
+                            </div>
+                        }
                     </div>
                 }
             }
@@ -120,14 +156,13 @@
 
             @if (User.Identity?.IsAuthenticated == true)
             {
-                <div class="comment-form">
+                <div class="comment-form mt-4">
+                    <h5 class="mb-3">Leave a comment</h5>
                     <form asp-controller="Comment" asp-action="Add" method="post">
                         <input type="hidden" name="BlogId" value="@Model.Id" />
-                        <div class="mb-3">
-                            <textarea name="Content" class="form-control" rows="3" placeholder="Write your comment..."
-                            required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
+                        <textarea name="Content" class="form-control" rows="3" placeholder="Write your comment..."
+                        required></textarea>
+                        <button type="submit" class="btn btn-primary mt-2">
                             <i class="bi bi-send-fill"></i> Post Comment
                         </button>
                     </form>
@@ -143,3 +178,17 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.reply-toggle').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    const form = document.getElementById(`replyForm-${id}`);
+                    if (form) form.classList.toggle('d-none');
+                });
+            });
+        });
+    </script>
+}

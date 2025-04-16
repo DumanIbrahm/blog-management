@@ -1,0 +1,36 @@
+@model BlogManagementProject.Models.Comment
+
+<div class="comment-card">
+    <p class="mb-1">@Model.Content</p>
+    <small class="text-muted">
+        <i class="bi bi-person-circle"></i> @Model.User?.UserName •
+        <i class="bi bi-clock"></i> @Model.CreatedAt.ToString("g")
+    </small>
+
+    <a href="javascript:void(0);" class="d-block mt-2 text-decoration-underline text-primary small reply-toggle"
+        data-id="@Model.Id">
+        Reply
+    </a>
+
+    <div id="replyForm-@Model.Id" class="reply-form d-none mt-2">
+        <form asp-controller="Comment" asp-action="Add" method="post">
+            <input type="hidden" name="BlogId" value="@Model.BlogId" />
+            <input type="hidden" name="ParentCommentId" value="@Model.Id" />
+            <textarea name="Content" class="form-control mb-2" rows="2" placeholder="Write your reply..."
+                required></textarea>
+            <button type="submit" class="btn btn-sm btn-success">
+                <i class="bi bi-reply"></i> Post Reply
+            </button>
+        </form>
+    </div>
+
+    @if (Model.Replies != null && Model.Replies.Any())
+    {
+        <div class="ms-4 mt-3 border-start ps-3">
+            @foreach (var reply in Model.Replies.OrderBy(r => r.CreatedAt))
+            {
+                @Html.Partial("_CommentPartial", reply)
+            }
+        </div>
+    }
+</div>

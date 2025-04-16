@@ -6,23 +6,18 @@ namespace BlogManagementProject.Models
     public class Comment
     {
         public int Id { get; set; }
+        public string Content { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        [Required]
-        public string Content { get; set; } = string.Empty;
+        public string UserId { get; set; }
+        public User User { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-        // Foreign Keys
-        [Required]
         public int BlogId { get; set; }
-
-        [ForeignKey("BlogId")]
         public Blog Blog { get; set; }
 
-        [Required]
-        public string UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public User User { get; set; }
+        public int? ParentCommentId { get; set; }
+        public Comment? ParentComment { get; set; }
+        public ICollection<Comment> Replies { get; set; } = new List<Comment>();
     }
+
 }

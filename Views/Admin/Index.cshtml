@@ -1,0 +1,178 @@
+@* Admin Dashboard View - with Chart.js integration *@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+<style>
+    .dashboard-card-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+    }
+
+    .dashboard-card-hover:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="container py-5">
+    <h2 class="fw-bold mb-4 text-center">🛡️ Admin Dashboard</h2>
+
+    <div class="row text-center">
+        <div class="col-md-3">
+            <a asp-action="Blogs" class="text-decoration-none text-dark">
+                <div class="card shadow-sm border-0 mb-4 bg-light dashboard-card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">📝 Blogs</h5>
+                        <p class="display-6 fw-bold">@ViewBag.BlogCount</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-action="Users" class="text-decoration-none text-dark">
+                <div class="card shadow-sm border-0 mb-4 bg-light dashboard-card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">👤 Users</h5>
+                        <p class="display-6 fw-bold">@ViewBag.UserCount</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-action="Categories" class="text-decoration-none text-dark">
+                <div class="card shadow-sm border-0 mb-4 bg-light dashboard-card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">📂 Categories</h5>
+                        <p class="display-6 fw-bold">@ViewBag.CategoryCount</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-action="Comments" class="text-decoration-none text-dark">
+                <div class="card shadow-sm border-0 mb-4 bg-light dashboard-card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">💬 Comments</h5>
+                        <p class="display-6 fw-bold">@ViewBag.CommentCount</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-graph-up-arrow me-2"></i> Weekly Blog Posts</h5>
+                </div>
+                <div class="card-body bg-light">
+                    <canvas id="blogChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-bar-chart-line-fill me-2"></i> Blog Count by Category</h5>
+                </div>
+                <div class="card-body bg-light">
+                    <canvas id="categoryChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/Admin/GetWeeklyBlogStats')
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.map(d => d.date);
+                    const counts = data.map(d => d.count);
+
+                    const ctx = document.getElementById('blogChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Posts Published',
+                                data: counts,
+                                borderColor: '#0d6efd',
+                                backgroundColor: 'rgba(13, 110, 253, 0.2)',
+                                tension: 0.3,
+                                fill: true,
+                                pointBackgroundColor: '#0d6efd',
+                                pointBorderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    stepSize: 1
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    backgroundColor: '#0d6efd',
+                                    titleFont: { weight: 'bold' },
+                                    bodyColor: '#fff'
+                                }
+                            }
+                        }
+                    });
+                });
+
+            fetch('/Admin/GetBlogCountByCategory')
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.map(d => d.category);
+                    const counts = data.map(d => d.count);
+
+                    const ctx = document.getElementById('categoryChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Blog Count',
+                                data: counts,
+                                backgroundColor: '#198754',
+                                borderRadius: 5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    backgroundColor: '#198754',
+                                    bodyColor: '#fff'
+                                }
+                            }
+                        }
+                    });
+                });
+        });
+    </script>
+}
