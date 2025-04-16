@@ -54,21 +54,24 @@ namespace BlogManagementProject.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = await _userManager.FindByNameAsync(model.UserName);
+            var user = await _userManager.FindByNameAsync(model.UserName)
+                       ?? await _userManager.FindByEmailAsync(model.UserName);
+
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Email or Password incorrect!");
+                ModelState.AddModelError(string.Empty, "Username or Password incorrect!");
                 return View(model);
             }
 
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
             if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Blog");
 
-            ModelState.AddModelError(string.Empty, "Email or Password incorrect!");
+            ModelState.AddModelError(string.Empty, "Username or Password incorrect!");
             return View(model);
         }
+
 
 
         public async Task<IActionResult> Logout()

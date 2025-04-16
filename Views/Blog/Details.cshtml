@@ -1,112 +1,145 @@
 @model BlogManagementProject.Models.Blog
+
 @{
     ViewData["Title"] = "Blog Details";
 }
 
-<div class="card shadow rounded-3 border-0">
-    @if (!string.IsNullOrEmpty(Model.ImagePath))
-    {
-        <img src="@Model.ImagePath" class="card-img-top rounded-top" alt="Blog image"
-            style="object-fit: cover; height: 300px;">
+<style>
+    .details-wrapper {
+        max-width: 900px;
+        margin: auto;
+        padding: 3rem 1rem;
     }
 
-    <div class="card-body">
-        <h2 class="card-title fw-bold">@Model.Title</h2>
-        <p class="text-muted small mb-1">
-            <i class="bi bi-person"></i> @Model.User?.UserName •
-            <i class="bi bi-calendar"></i> @Model.PublishedDate.ToShortDateString()
-        </p>
-        <p class="text-secondary mb-2"><strong>Category:</strong> @Model.Category?.Name</p>
-        <hr />
-        <p class="card-text fs-6">@Model.Content</p>
-    </div>
+    .blog-details-card {
+        border-radius: 1rem;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        background-color: #ffffff;
+    }
 
-    <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
-        <a class="btn btn-outline-secondary" asp-action="Index">
-            <i class="bi bi-arrow-left"></i> Back
-        </a>
+    .blog-details-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
 
-        @if (User.Identity?.IsAuthenticated == true &&
-            User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == Model.UserId)
+    .blog-details-content {
+        padding: 2rem;
+    }
+
+    .blog-meta {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .blog-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background-color: #f8f9fa;
+    }
+
+    .comment-box {
+        margin-top: 3rem;
+    }
+
+    .comment-card {
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background-color: #fdfdfd;
+    }
+
+    .comment-form {
+        margin-top: 2rem;
+    }
+</style>
+
+<div class="details-wrapper">
+    <a class="btn btn-outline-secondary" asp-action="Index">
+        <i class="bi bi-arrow-left"></i> Back to blogs
+    </a>
+    <div class="blog-details-card">
+
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
         {
-            <div class="d-flex gap-2">
-                <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@Model.Id">
-                    <i class="bi bi-pencil-square"></i> Edit
-                </a>
-                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@Model.Id">
-                    <i class="bi bi-trash3"></i> Delete
-                </a>
-            </div>
+            <img src="@Model.ImagePath" alt="Blog image" class="blog-details-image" />
         }
-    </div>
 
-    <hr class="my-5" />
-    <h4 class="mb-4">Comments</h4>
-
-    @if (Model.Comments != null && Model.Comments.Any())
-    {
-        foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
-        {
-            <div class="card mb-3 shadow-sm border-0">
-                <div class="card-body">
-                    <p class="card-text">@comment.Content</p>
-                </div>
-                <div class="card-footer bg-white d-flex justify-content-between">
-                    <small class="text-muted">
-                        <i class="bi bi-person-circle"></i> @comment.User?.UserName
-                    </small>
-                    <small class="text-muted">
-                        <i class="bi bi-calendar"></i> @comment.CreatedAt.ToString("g")
-                    </small>
-                </div>
+        <div class="blog-details-content">
+            <h2 class="fw-bold">@Model.Title</h2>
+            <div class="blog-meta mb-2">
+                <i class="bi bi-person"></i> @Model.User?.UserName &nbsp;|&nbsp;
+                <i class="bi bi-calendar"></i> @Model.PublishedDate.ToShortDateString() &nbsp;|&nbsp;
+                <strong>Category:</strong> @Model.Category?.Name
             </div>
-        }
-    }
-    else
-    {
-        <p class="text-muted">No comments yet.</p>
-    }
-
-    @if (User.Identity?.IsAuthenticated == true)
-    {
-        <div class="mt-4 text-end">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">
-                <i class="bi bi-chat-left-text"></i> Add Comment
-            </button>
+            <hr />
+            <p class="fs-5">@Model.Content</p>
         </div>
-    }
-    else
-    {
-        <div class="alert alert-warning mt-4">
-            <i class="bi bi-exclamation-circle"></i> You must
-            <a asp-controller="Account" asp-action="Login">log in</a> to post a comment.
-        </div>
-    }
-</div>
 
-<!-- Add Comment Modal -->
-<div class="modal fade" id="addCommentModal" tabindex="-1" aria-labelledby="addCommentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-controller="Comment" asp-action="Add" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addCommentModalLabel">Add a Comment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="blog-actions">
+
+
+            @if (User.Identity?.IsAuthenticated == true &&
+                        User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == Model.UserId)
+            {
+                <div class="d-flex gap-2">
+                    <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@Model.Id">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                    <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@Model.Id">
+                        <i class="bi bi-trash3"></i> Delete
+                    </a>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" name="BlogId" value="@Model.Id" />
-                    <div class="mb-3">
-                        <label for="commentContent" class="form-label">Your Comment</label>
-                        <textarea name="Content" id="commentContent" class="form-control" rows="4" placeholder="Write your comment..." required></textarea>
+            }
+        </div>
+
+        <div class="blog-details-content comment-box">
+            <h4 class="mb-3">Comments</h4>
+
+            @if (Model.Comments != null && Model.Comments.Any())
+            {
+                foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+                {
+                    <div class="comment-card">
+                        <p class="mb-1">@comment.Content</p>
+                        <small class="text-muted">
+                            <i class="bi bi-person-circle"></i> @comment.User?.UserName •
+                            <i class="bi bi-clock"></i> @comment.CreatedAt.ToString("g")
+                        </small>
                     </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted">No comments yet.</p>
+            }
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <div class="comment-form">
+                    <form asp-controller="Comment" asp-action="Add" method="post">
+                        <input type="hidden" name="BlogId" value="@Model.Id" />
+                        <div class="mb-3">
+                            <textarea name="Content" class="form-control" rows="3" placeholder="Write your comment..."
+                            required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-send-fill"></i> Post Comment
+                        </button>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-send"></i> Submit
-                    </button>
+            }
+            else
+            {
+                <div class="alert alert-warning mt-4">
+                    <i class="bi bi-exclamation-circle"></i> You must
+                    <a asp-controller="Account" asp-action="Login">log in</a> to post a comment.
                 </div>
-            </form>
+            }
         </div>
     </div>
 </div>

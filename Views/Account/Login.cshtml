@@ -4,44 +4,108 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
-
-<form asp-action="Login" method="post">
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <strong>Email or Password incorrect!</strong>
-
-            @Html.ValidationSummary(excludePropertyErrors: true)
-        </div>
+<style>
+    body {
+        background-color: white !important;
     }
 
-    <div class="form-group mb-2">
-        <label asp-for="UserName"></label>
-        <input asp-for="UserName" class="form-control" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
+    .login-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+    }
 
-    <div class="mb-3">
-        <label asp-for="Password" class="form-label"></label>
-        <div class="input-group">
-            <input asp-for="Password" type="password" class="form-control" id="passwordInput" />
-            <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility()">
-                <i class="bi bi-eye-slash" id="toggleIcon"></i>
-            </button>
+    .login-card {
+        width: 100%;
+        max-width: 550px;
+        padding: 3rem 2.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-card h3 {
+        font-weight: 700;
+    }
+
+    .login-card .form-control {
+        height: 50px;
+    }
+
+    .login-card .btn-primary {
+        height: 50px;
+        font-weight: 600;
+    }
+
+    .input-group-text {
+        background-color: #fff;
+        border-left: none;
+    }
+
+    .input-group .form-control {
+        border-right: none;
+    }
+
+    .icon-circle {
+        font-size: 2.5rem;
+        color: #0d6efd;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="card login-card">
+        <div class="text-center mb-4">
+            <i class="bi bi-person-circle icon-circle"></i>
+            <h3 class="mt-2">Welcome Back</h3>
+            <p class="text-muted">Login to your account</p>
         </div>
-        <span asp-validation-for="Password" class="text-danger"></span>
+
+        <form asp-action="Login" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <strong>Email or Password incorrect!</strong>
+                    @Html.ValidationSummary(excludePropertyErrors: true)
+                </div>
+            }
+
+            <div class="mb-3">
+                <label asp-for="UserName" class="form-label">Username</label>
+                <input asp-for="UserName" class="form-control" placeholder="Enter your username" />
+                <span asp-validation-for="UserName" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <div class="input-group">
+                    <input asp-for="Password" type="password" class="form-control" id="passwordInput"
+                        placeholder="Enter your password" />
+                    <span class="input-group-text">
+                        <button class="btn p-0 border-0" type="button" onclick="togglePasswordVisibility()">
+                            <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                        </button>
+                    </span>
+                </div>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label">Remember Me</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <span class="text-muted">Don't have an account?</span>
+            <a asp-action="Register" class="text-decoration-none fw-semibold">Register</a>
+        </div>
     </div>
-
-
-
-    <div class="form-check mb-3">
-        <input asp-for="RememberMe" class="form-check-input" />
-        <label asp-for="RememberMe" class="form-check-label">Remember Me</label>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+</div>
 
 @section Scripts {
     <script>

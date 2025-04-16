@@ -1,105 +1,140 @@
 @model IEnumerable<BlogManagementProject.Models.Blog>
+
 @{
     ViewData["Title"] = "Blog Posts";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold">Blog Posts</h2>
-    @if (User.Identity?.IsAuthenticated == true)
-    {
-        <a class="btn btn-success shadow-sm" asp-action="Create">
-            <i class="bi bi-plus-circle me-1"></i> Create Blog
-        </a>
+<style>
+    .hover-shadow:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        transition: 0.3s ease-in-out;
     }
-</div>
 
-<form asp-action="Index" method="get" class="row g-3 mb-4">
-    <div class="col-md-6">
-        <input type="text" id="searchInput" name="search" value="@ViewBag.Search" class="form-control"
-            placeholder="Search blog title or content..." />
-    </div>
-    <div class="col-md-4">
-        <select name="categoryId" class="form-select">
-            <option value="">-- All Categories --</option>
-            @foreach (var category in ViewBag.Categories)
-            {
-                <option value="@category.Id"
-                    selected="@(ViewBag.SelectedCategory != null && ViewBag.SelectedCategory == category.Id ? "selected" : null)">
-                    @category.Name
-                </option>
-            }
-        </select>
-    </div>
-    <div class="col-md-2">
-        <button type="submit" class="btn btn-outline-primary w-100">
-            <i class="bi bi-search"></i> Search
-        </button>
-    </div>
-</form>
+    .transition {
+        transition: all 0.3s ease;
+    }
 
-<div id="blogList" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    @foreach (var blog in Model)
-    {
-        <div class="col">
-            <div class="card h-100 shadow-sm border-0 transition hover-shadow">
-                @if (!string.IsNullOrEmpty(blog.ImagePath))
-                {
-                    <img src="@blog.ImagePath" class="card-img-top" alt="Blog image" style="object-fit: cover; height: 200px;">
-                }
-                <div class="card-body">
-                    <h5 class="card-title fw-semibold">@blog.Title</h5>
-                    <p class="card-text text-muted small">
-                        @blog.Content.Substring(0, Math.Min(100, blog.Content.Length))...
-                    </p>
-                </div>
-                <div class="card-footer bg-white d-flex justify-content-between align-items-center border-top-0">
-                    <small class="text-muted">
-                        <i class="bi bi-calendar"></i> @blog.PublishedDate.ToShortDateString() • @blog.User?.UserName
-                    </small>
-                    <a class="btn btn-outline-primary btn-sm" asp-action="Details" asp-route-id="@blog.Id">
-                        <i class="bi bi-eye"></i> Read More
-                    </a>
-                </div>
+    .card.transition {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card.transition:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">📚 Blog Posts</h2>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a class="btn btn-success shadow-sm" asp-action="Create">
+                <i class="bi bi-plus-circle me-1"></i> Create Blog
+            </a>
+        }
+    </div>
+
+    <div class="card shadow-sm p-4 mb-4">
+        <form asp-action="Index" method="get" class="row g-3">
+            <div class="col-md-6">
+                <input type="text" id="searchInput" name="search" value="@ViewBag.Search" class="form-control"
+                    placeholder="🔍 Search blog title or content..." />
             </div>
+            <div class="col-md-4">
+                <select name="categoryId" class="form-select">
+                    <option value="">-- All Categories --</option>
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.Id"
+                            selected="@(ViewBag.SelectedCategory != null && ViewBag.SelectedCategory == category.Id ? "selected" : null)">
+                            @category.Name
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-primary w-100">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
+        </form>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            <i class="bi bi-exclamation-triangle-fill"></i> No blogs found.
         </div>
     }
+
+    <div id="blogList" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var blog in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 hover-shadow transition">
+                    @if (!string.IsNullOrEmpty(blog.ImagePath))
+                    {
+                        <img src="@blog.ImagePath" class="card-img-top" alt="Blog image"
+                            style="object-fit: cover; height: 200px;">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">@blog.Title</h5>
+                        <p class="card-text text-muted small">
+                            @blog.Content.Substring(0, Math.Min(100, blog.Content.Length))...
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white d-flex justify-content-between align-items-center border-top-0">
+                        <small class="text-muted">
+                            <i class="bi bi-calendar"></i> @blog.PublishedDate.ToShortDateString() • @blog.User?.UserName
+                        </small>
+                        <a class="btn btn-light border d-flex align-items-center gap-2 px-3 py-1 rounded-pill shadow-sm small"
+                            asp-action="Details" asp-route-id="@blog.Id">
+                            <i class="bi bi-eye-fill"></i> <span>Read More</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-center my-4">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)"
+                            asp-route-search="@ViewBag.Search" asp-route-categoryId="@ViewBag.SelectedCategory">
+                            Previous
+                        </a>
+                    </li>
+                }
+
+                @for (var i = 1; i <= (int)ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)"
+                            asp-route-search="@ViewBag.Search" asp-route-categoryId="@ViewBag.SelectedCategory">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+                }
+
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)"
+                            asp-route-search="@ViewBag.Search" asp-route-categoryId="@ViewBag.SelectedCategory">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
 </div>
-<div class="d-flex justify-content-center my-4">
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            @if (ViewBag.CurrentPage > 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)"
-                        asp-route-search="@ViewBag.Search" asp-route-categoryId="@ViewBag.SelectedCategory">
-                        Previous
-                    </a>
-                </li>
-            }
-
-            @for (var i = 1; i <= (int)ViewBag.TotalPages; i++)
-            {
-                <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
-                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search"
-                        asp-route-categoryId="@ViewBag.SelectedCategory">
-                        @i
-                    </a>
-                </li>
-            }
-
-            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-            {
-                <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)"
-                        asp-route-search="@ViewBag.Search" asp-route-categoryId="@ViewBag.SelectedCategory">
-                        Next
-                    </a>
-                </li>
-            }
-        </ul>
-    </nav>
-</div>
-
 
 @section Scripts {
     <script>
@@ -116,23 +151,23 @@
 
             blogs.forEach(blog => {
                 blogList.innerHTML += `
-                                                                    <div class="col">
-                                                                        <div class="card h-100 shadow-sm border-0">
-                                                                            <div class="card-body">
-                                                                                <h5 class="card-title fw-semibold">${blog.title}</h5>
-                                                                                <p class="card-text text-muted small">${blog.content}</p>
-                                                                            </div>
-                                                                            <div class="card-footer bg-white d-flex justify-content-between align-items-center border-top-0">
-                                                                                <small class="text-muted">
-                                                                                    <i class="bi bi-calendar"></i> ${blog.date} • ${blog.user}
-                                                                                </small>
-                                                                                <a class="btn btn-outline-primary btn-sm" href="/Blog/Details/${blog.id}">
-                                                                                    <i class="bi bi-eye"></i> Read More
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                `;
+                                        <div class="col">
+                                            <div class="card h-100 shadow-sm border-0 transition hover-shadow">
+                                                <div class="card-body">
+                                                    <h5 class="card-title fw-semibold">${blog.title}</h5>
+                                                    <p class="card-text text-muted small">${blog.content}</p>
+                                                </div>
+                                                <div class="card-footer bg-white d-flex justify-content-between align-items-center border-top-0">
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-calendar"></i> ${blog.date} • ${blog.user}
+                                                    </small>
+                                                    <a class="btn btn-outline-primary btn-sm" href="/Blog/Details/${blog.id}">
+                                                        <i class="bi bi-eye"></i> Read More
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
             });
         });
     </script>
