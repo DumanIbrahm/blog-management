@@ -13,8 +13,32 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/32bcb0fe-1fbb-4fa6-8232-b1f7ca00f6ea.png",
+      "PackagePath": "staticwebassets/images/32bcb0fe-1fbb-4fa6-8232-b1f7ca00f6ea.png"
+    },
+    {
+      "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/6285aee2-a431-4a99-b4d5-32a743b2828e.png",
+      "PackagePath": "staticwebassets/images/6285aee2-a431-4a99-b4d5-32a743b2828e.png"
+    },
+    {
+      "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/7b9b583a-055b-471d-b2bb-bba90c39c730.png",
+      "PackagePath": "staticwebassets/images/7b9b583a-055b-471d-b2bb-bba90c39c730.png"
+    },
+    {
+      "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/83654af7-3493-44d2-9858-ce5b746ab64d.png",
+      "PackagePath": "staticwebassets/images/83654af7-3493-44d2-9858-ce5b746ab64d.png"
+    },
+    {
       "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/bd731aeb-1e9f-4297-a698-f5e3fc41a30d.png",
       "PackagePath": "staticwebassets/images/bd731aeb-1e9f-4297-a698-f5e3fc41a30d.png"
+    },
+    {
+      "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/d0747f85-040d-430f-94e5-e3f3839bf99b.png",
+      "PackagePath": "staticwebassets/images/d0747f85-040d-430f-94e5-e3f3839bf99b.png"
+    },
+    {
+      "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/images/d5a3ffa7-4457-4f1f-9224-661491482229.png",
+      "PackagePath": "staticwebassets/images/d5a3ffa7-4457-4f1f-9224-661491482229.png"
     },
     {
       "Id": "/Users/ibrahimduman/Desktop/BlogManagementProject/wwwroot/js/site.js",

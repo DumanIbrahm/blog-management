@@ -22,10 +22,10 @@ namespace BlogManagementProject.Controllers
             _userRepository = userRepository;
         }
 
-        public async Task<IActionResult> Index(string? search, int? categoryId)
+        public async Task<IActionResult> Index(string? search, int? categoryId, int page = 1)
         {
+            var pageSize = 6;
             var blogs = await _blogRepository.GetAllWithCategoryAsync();
-            var categories = await _categoryRepository.GetAllAsync();
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -38,11 +38,21 @@ namespace BlogManagementProject.Controllers
                 blogs = blogs.Where(b => b.CategoryId == categoryId.Value);
             }
 
-            ViewBag.Categories = categories;
+            var totalBlogs = blogs.Count();
+            var totalPages = (int)Math.Ceiling(totalBlogs / (double)pageSize);
+
+            var paginatedBlogs = blogs
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.Categories = await _categoryRepository.GetAllAsync();
             ViewBag.SelectedCategory = categoryId;
             ViewBag.Search = search;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
 
-            return View(blogs);
+            return View(paginatedBlogs);
         }
 
 
